@@ -1,0 +1,7 @@
+create extension if not exists pgcrypto;
+create table if not exists public.rooms(id uuid primary key default gen_random_uuid(),code text unique not null,host_id text not null,status text not null default 'lobby',state jsonb,created_at timestamptz not null default now(),updated_at timestamptz not null default now());
+create table if not exists public.room_players(id uuid primary key default gen_random_uuid(),room_id uuid not null references public.rooms(id) on delete cascade,player_id text not null,name text not null,seat int not null check(seat between 0 and 3),ready boolean not null default false,connected boolean not null default true,unique(room_id,player_id),unique(room_id,seat));
+alter table public.rooms enable row level security;alter table public.room_players enable row level security;
+create policy "rooms readable" on public.rooms for select using(true);create policy "rooms insertable" on public.rooms for insert with check(true);create policy "rooms updateable" on public.rooms for update using(true);
+create policy "players readable" on public.room_players for select using(true);create policy "players insertable" on public.room_players for insert with check(true);create policy "players updateable" on public.room_players for update using(true);create policy "players deletable" on public.room_players for delete using(true);
+alter publication supabase_realtime add table public.rooms;alter publication supabase_realtime add table public.room_players;
