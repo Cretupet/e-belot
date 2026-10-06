@@ -1,0 +1,1 @@
+export type Locale="ru"|"ro";export const messages={ru:{create:"Создать стол",join:"Войти по коду",pass:"ПАС",yourTurn:"Ваш ход",next:"Следующая раздача",newGame:"Новая партия"},ro:{create:"Creează masa",join:"Intră cu cod",pass:"PAS",yourTurn:"Rândul tău",next:"Următoarea rundă",newGame:"Joc nou"}} as const;
