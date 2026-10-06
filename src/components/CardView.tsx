@@ -1,0 +1,1 @@
+import{Card}from"@/game/types";const suit={clubs:"♣",diamonds:"♦",hearts:"♥",spades:"♠"};export function CardView({card,disabled=false}:{card:Card;disabled?:boolean}){const red=card.suit==="hearts"||card.suit==="diamonds";return <button className={"card "+(red?"red ":"")+(disabled?"disabled":"")} disabled={disabled}><b>{card.rank}</b><span>{suit[card.suit]}</span></button>}
