@@ -1,0 +1,7 @@
+import{Declaration,DeclarationKind,detectDeclarations,noOverlap}from"./declarations";import{Card,Suit}from"./types";
+export interface AnnouncementState{declared:Declaration[];bellaDeclared:boolean;four8:boolean;four7:boolean}
+export function availableAnnouncements(hand:Card[],trump:Suit):Declaration[]{return detectDeclarations(hand,trump)}
+export function declare(state:AnnouncementState,d:Declaration,completedTricks:number):AnnouncementState{if(d.kind==="bella"){if(state.bellaDeclared)throw Error("Bella already declared");return{...state,bellaDeclared:true,declared:[...state.declared,d]}}if(completedTricks>2)throw Error("Declaration window closed");if(d.kind==="four7")return{...state,four7:true};if(d.kind==="four8")return{...state,four8:true};const next=[...state.declared,d];if(!noOverlap(next))throw Error("Cards overlap");return{...state,declared:next}}
+export function declarationTotal(ds:Declaration[],four8=false):number{return ds.filter(d=>d.kind==="bella"||!four8).reduce((n,d)=>n+d.points,0)}
+export function strongest(ds:Declaration[]):Declaration|null{return ds.filter(d=>d.kind!=="bella"&&d.kind!=="four7"&&d.kind!=="four8").sort((a,b)=>b.strength-a.strength)[0]??null}
+export function winningTeamDeclarations(a:Declaration[],b:Declaration[]):0|1|null{const A=strongest(a),B=strongest(b);if(!A&&!B)return null;if(A&&!B)return 0;if(B&&!A)return 1;if(A!.strength>B!.strength)return 0;if(B!.strength>A!.strength)return 1;return null}
