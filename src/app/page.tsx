@@ -1,0 +1,1 @@
+export default function Home(){return <main><section><div className="mark">E_</div><h1>E_BELOT</h1><p>Молдавский Белот · 2 × 2</p><button>Создать стол</button><button className="secondary">Войти по коду</button><small>Игровое ядро v0.1</small></section></main>}
