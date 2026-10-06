@@ -1,0 +1,11 @@
+import{Card,Rank,Suit}from"./types";
+export type DeclarationKind="sequence20"|"sequence50"|"sequence100"|"fourJ"|"four9"|"four100"|"bella"|"four7"|"four8";
+export interface Declaration{kind:DeclarationKind;cards:Card[];points:number;strength:number}
+const seq:Rank[]=["7","8","9","10","J","Q","K","A"];
+const four100:Rank[]=["Q","K","10","A"];
+const key=(c:Card)=>c.suit+c.rank;
+export function detectDeclarations(hand:Card[],trump:Suit):Declaration[]{const out:Declaration[]=[];for(const suit of["clubs","diamonds","hearts","spades"]as Suit[]){const cards=hand.filter(c=>c.suit===suit).sort((a,b)=>seq.indexOf(a.rank)-seq.indexOf(b.rank));let run:Card[]=[];for(const c of cards){if(!run.length||seq.indexOf(c.rank)===seq.indexOf(run.at(-1)!.rank)+1)run.push(c);else{pushRun(run,out,trump);run=[c]}}pushRun(run,out,trump)}
+ for(const rank of["7","8","9","J","Q","K","10","A"]as Rank[]){const cards=hand.filter(c=>c.rank===rank);if(cards.length!==4)continue;if(rank==="7")out.push({kind:"four7",cards,points:0,strength:1000});else if(rank==="8")out.push({kind:"four8",cards,points:0,strength:900});else if(rank==="J")out.push({kind:"fourJ",cards,points:200,strength:800});else if(rank==="9")out.push({kind:"four9",cards,points:150,strength:700});else if(four100.includes(rank))out.push({kind:"four100",cards,points:100,strength:600+four100.indexOf(rank)})}
+ const bella=hand.filter(c=>c.suit===trump&&(c.rank==="Q"||c.rank==="K"));if(bella.length===2)out.push({kind:"bella",cards:bella,points:20,strength:0});return out}
+function pushRun(run:Card[],out:Declaration[],trump:Suit){if(run.length<3)return;const top=seq.indexOf(run.at(-1)!.rank);const trumpBonus=run[0].suit===trump?0.5:0;if(run.length===3)out.push({kind:"sequence20",cards:[...run],points:20,strength:100+top+trumpBonus});else if(run.length===4)out.push({kind:"sequence50",cards:[...run],points:50,strength:200+top+trumpBonus});else out.push({kind:"sequence100",cards:[...run],points:100,strength:500+top+trumpBonus})}
+export function noOverlap(ds:Declaration[]):boolean{const seen=new Set<string>();for(const d of ds.filter(x=>x.kind!=="bella"&&x.kind!=="four7"&&x.kind!=="four8"))for(const c of d.cards){const k=key(c);if(seen.has(k))return false;seen.add(k)}return true}
