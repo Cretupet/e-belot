@@ -1,0 +1,1 @@
+"use client";import{useState}from"react";import{Lobby}from"./Lobby";import{GameTable}from"./GameTable";export function App(){const[local,setLocal]=useState(false);return local?<GameTable/>:<main className="home"><Lobby onLocal={()=>setLocal(true)}/></main>}
