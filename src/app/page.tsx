@@ -1,1 +1,1 @@
-import{GameTable}from"@/components/GameTable";export default function Home(){return <main><GameTable/></main>}
+import{App}from"@/components/App";export default function Home(){return <App/>}
