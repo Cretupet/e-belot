@@ -33,3 +33,5 @@ npm run dev
 ## Rules
 
 The project follows the Moldovan E_BELOT rules defined for this game: 32 cards; teams on opposite seats; dealer rotates; 101 bil target with +50 when both teams cross the target; three bolts cost 10 bil; kaput is 252 base points and gives the losing team -10 bil; dealer-side kaput also adds a bolt; 4×7 cancels the deal, 4×8 cancels ordinary declarations but not Bella; Bella is trump Q+K for 20.
+
+<!-- deployment trigger -->
